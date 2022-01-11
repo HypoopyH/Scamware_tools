@@ -30,7 +30,7 @@ log = logging.getLogger(__name__)
 
 
 class AppYet(BaseModule):
-    # 通过python实现使用PBEWithMD5AndDES解密，但是appyet加解密前后还有一些字节操作。decry函数不包含字节操作，因此通过jar包调用java方法。
+    #
     def decry(self, filepath):
         with open(filepath, "rb") as fh:
             plaintext_to_encrypt = fh.read()
@@ -52,32 +52,15 @@ class AppYet(BaseModule):
         print(encrypted.decode('utf-8', errors='ignore'))
 
     def extract_startpage(self, filepath):
-        """
-        基本的开发流程如下：
-        ①、使用jpype开启jvm
-        ②、加载java类
-        ③、调用java方法
-        ④、关闭jvm（不是真正意义上的关闭，卸载之前加载的类）
-        """
-        # ①、使用jpype开启虚拟机（在开启jvm之前要加载类路径）
-        # 加载刚才打包的jar文件
         decode_jar_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "decodeappyet.jar")
 
-        # 获取jvm.dll 的文件路径
         jvmPath = jpype.getDefaultJVMPath()
 
-        # 开启jvm
         if not jpype.isJVMStarted():
             jpype.startJVM(jvmPath, '-ea',
                            '-Djava.class.path={0}'.format(Config.Config["decrypt_jar"]),
                            convertStrings=False)
-        # ②、加载java类（参数是java的长类名）
         javaClass = jpype.JClass("com.ResDecode.Main")()
-
-        # 实例化java对象
-        # javaInstance = javaClass()
-
-        # ③、调用java方法，由于我写的是静态方法，直接使用类名就可以调用方法
         _password = 'X5nFe16r7FbKpb16lJGH386S4WFaqy1khWWzo7Wyv3Pr1wJlF5C28g39kNcPYt4p2s3FayL3u28KfLxUQx8c922XH9inECtciY0hgsegn443gfeg543'  # MD5
         plain = javaClass.DeAppYet(filepath, _password)
         feed_url = []
@@ -94,9 +77,6 @@ class AppYet(BaseModule):
                 if tmp not in web_url:
                     web_url.append(tmp)
         weburl = ("".join(web_url)).replace('"Type":"Link","Data":"', ' ')
-        # ④、关闭jvm
-        # 执行关闭jvm后，后续其他模块执行jpype.startJVM()时，会提示 OSError: JVM cannot be restarted
-        # jpype.shutdownJVM()
         return "{} {}".format(feedurl, weburl)
 
     def doSigCheck(self):
@@ -114,11 +94,11 @@ class AppYet(BaseModule):
         os.makedirs(extract_folder, exist_ok=True)
         tmp_folder = os.path.join(os.getcwd(), extract_folder, "tmp")
         os.makedirs(tmp_folder, exist_ok=True)
-        self._apktool_no_decode_source(tmp_folder)  # 不反编译代码
+        self._apktool_no_decode_source(tmp_folder)  
 
         for dirpath, dirnames, ifilenames in os.walk(tmp_folder):
             if dirpath.find("assets/web") != -1 or dirpath.find(
-                    "assets/media") != -1:  # 自定义页面保存在assets/web中，上传的多媒体文件保存在assets/media中
+                    "assets/media") != -1:  
                 for fs in ifilenames:
                     f = os.path.join(dirpath, fs)
                     matchObj = re.match(r'(.*)assets/(.*)', f, re.S)
@@ -143,7 +123,7 @@ class AppYet(BaseModule):
 
 
 def main():
-    f = "./test_case/AppYet/example.apk"  # 后续会将当前脚本路径与之相拼接，得到最终detect_file路径
+    f = "./test_case/AppYet/example.apk"  
     appyet = AppYet(f, "android")
     if appyet.doSigCheck():
         logging.info("AppYet signature Match")

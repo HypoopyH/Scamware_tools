@@ -98,7 +98,7 @@ class Andromo(BaseModule):
 
 
 def main():
-    f = "./test_case/Andromo/app_andromo.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径
+    f = "./test_case/Andromo/app_andromo.apk"    
     andromo = Andromo(f, "android")
     if andromo.doSigCheck():
         logging.info("Andromo signature Match")

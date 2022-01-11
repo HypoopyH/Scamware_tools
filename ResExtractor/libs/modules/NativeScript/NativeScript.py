@@ -45,7 +45,7 @@ class NativeScript(BaseModule):
         shutil.copytree(resource_path, extract_folder, dirs_exist_ok=True)
 
         # get assets/app/package.json
-        # package.json是应用的配置信息，描述应用程序的特征和依赖项，json中的"main"标签对应的应用启动文件
+        # package.json
         json_path = os.path.join(tmp_folder, "assets/app/package.json")
         fo = open(json_path, "r+")
         fo_file = json.load(fo)

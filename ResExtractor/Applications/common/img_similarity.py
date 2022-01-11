@@ -25,7 +25,7 @@ https://blog.csdn.net/zhangziju/article/details/79754652
 class SIFTFlannBasedMatcher:
     def __init__(self):
         self._sift = cv2.xfeatures2d.SIFT_create()
-        # FLANN 参数设计
+        # FLANN 
         FLANN_INDEX_KDTREE = 0
         self._index_params = dict(algorithm=FLANN_INDEX_KDTREE, trees=5)
         self._search_params = dict(checks=50)

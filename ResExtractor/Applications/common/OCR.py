@@ -34,17 +34,17 @@ class OCR_baiduAI:
         with open(file, 'rb') as fp:
             image = fp.read()
 
-            """ 调用通用文字识别, 图片参数为本地图片 """
+            """ common word """
             self._client.basicGeneral(image);
 
-            """ 如果有可选参数 """
+            """ args """
             options = {}
             options["language_type"] = "CHN_ENG"
             options["detect_direction"] = "true"
             options["detect_language"] = "true"
             options["probability"] = "true"
 
-            """ 带参数调用通用文字识别, 图片参数为本地图片 """
+            
             return self._client.basicGeneral(image, options)
 
 

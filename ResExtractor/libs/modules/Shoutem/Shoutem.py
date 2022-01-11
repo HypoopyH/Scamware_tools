@@ -29,12 +29,8 @@ class Shoutem(BaseModule):
     def extract_startpage(self, filepath):
         fp = open(filepath, "r")
         f = fp.read()
-        # 表达式表示匹配以“,{type:"shoutem.core.shortcuts",id:"[a-z0-9]{24}",attributes:“开始，“,relationships:“结束的字符串。
-        # 实际匹配时，如果存在多个子串满足正则表达式，返回的结果是一个列表，列表中只有一个元素，
-        # 因为“,{type:"shoutem.core.shortcuts",id:"[a-z0-9]{24}",attributes:“匹配的是第一个子串，“,relationships:“匹配的是最后一个子串
         matchObj = re.findall(',\{type:"shoutem.core.shortcuts",id:"[a-z0-9]{24}",attributes:\{(.+)\},relationships:', f, re.S)
 
-        #衷方案：对获取的元素进行字符串方式处理。使用正则匹配的可能可行方法是使用前向否定(?!...)，但是尝试失败
         launch_url=[]
         screens = ("type:\"shoutem.core.shortcuts\",id:\"111122223333444455556666\",attributes:{" + ((str)(matchObj[0]))).split(",relationships:")
         for screen in screens:
@@ -43,9 +39,7 @@ class Shoutem(BaseModule):
             if idex >= 0:
                 screen2 = screen[idex:]
                 print(screen2)
-                #在attributes字段中包括有很多字段，其中有screens,settings字段，如果有url链接，一般都是配置在这个settings字段中。
-                #这种方式可能会存在误报，但不会漏报，通过建立黑名单方式缓解
-                idex = screen2.find(",screens:[")  #失败返回-1，index方法则会报错
+                idex = screen2.find(",screens:[") 
                 if idex < 0:
                     continue
                 screen3 = screen2[idex:]
@@ -72,7 +66,6 @@ class Shoutem(BaseModule):
             if appliname.startswith("hr.apps.n"):
                 flag = 1
             print(flag)
-            #assets目录下包含一个fonts文件夹，以及三个文件
             zf = zipfile.ZipFile(self.detect_file, 'r')
             for f in zf.namelist():
                 if f.startswith("assets/fonts"):
@@ -110,7 +103,7 @@ class Shoutem(BaseModule):
 
 
 def main():
-    f = "./test_case/Shoutem/shoutemapp8.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径, //出错在解压缩失败//
+    f = "./test_case/Shoutem/shoutemapp8.apk"    
     shoutem = Shoutem(f, "android")
     if shoutem.doSigCheck():
         logging.info("Shoutem signature Match")

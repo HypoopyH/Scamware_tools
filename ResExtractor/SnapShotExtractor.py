@@ -131,7 +131,6 @@ def main():
 
     # s = SnapShotExtractor("")
     # snapshot_folder = os.path.join(Config.Config["working_folder"], Config.Config["snapshot_folder"])
-    # s.get_screen_shot("/hd/sample/803APK/202007APK_pkg/197684CDC55C94AE9BCD035D39D46C226/2020年7月16日李天宇被骗案_202007152035566272339737_QQ_8.4.1.apk", snapshot_folder)
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--apk-folder', required=True, help="Folder contains apk files.")

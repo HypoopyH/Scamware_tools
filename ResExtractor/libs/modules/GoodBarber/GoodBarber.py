@@ -33,12 +33,12 @@ class GoodBarber(BaseModule):
         sections = load_dict['gbsettings']['sections']
         for value in sections.values():
             for (k, v) in value.items():
-                if v == 'GBModuleTypeCustom':   #指的是自定义模块HTML，支持本地页面或者url链接，如果是url链接会存在key为url的项，本地页面则是存在key为sectionurl的项
+                if v == 'GBModuleTypeCustom':   
                     flag = flag + 1
-                elif v == 'GBModuleTypeClickto':    #指的是自定义链接linkto
+                elif v == 'GBModuleTypeClickto':    
                     launch_url.append(value['link']['url'])
                 elif v == 'GBModuleTypeArticle':
-                    launch_url.append(value['baseUrl'])  #指的是自定义RSS链接
+                    launch_url.append(value['baseUrl'])  
                 elif k == 'url':
                     flag = flag + 1
             if flag == 2:
@@ -60,13 +60,12 @@ class GoodBarber(BaseModule):
         os.makedirs(extract_folder, exist_ok = True)
         tmp_folder = os.path.join(os.getcwd(), extract_folder, "tmp")
         os.makedirs(tmp_folder, exist_ok = True)
-        #self._apktool_no_decode_source(tmp_folder)  #用apktool反编译出错，即使是用最新版apktool反编译仍然报错，为解压提取
         z = zipfile.ZipFile(self.detect_file, 'r')
         z.extractall(tmp_folder)
         z.close()
 
         for dirpath, dirnames, ifilenames in os.walk(tmp_folder):
-            if dirpath.find("assets/cache/settings/plugins") != -1:   #自定义页面保存在assets/cache/settings/plugins中
+            if dirpath.find("assets/cache/settings/plugins") != -1:   
                 for fs in ifilenames:
                     f = os.path.join(dirpath, fs)
                     matchObj = re.match(r'(.*)assets/cache/settings/plugins/(.*)', f, re.S)
@@ -82,7 +81,6 @@ class GoodBarber(BaseModule):
                         fp.close()
                         fwh.write(c)
                     fwh.close()
-        #7b070bc294d48bb947a2b4e0885cd58是固定的，因为这是“settings_json”的md5值
         launch_path = self.extract_startpage(os.path.join(tmp_folder, "assets/cache/settings/7b070bc294dc48bb947a2b4e0885cd58"))
 
         self._dump_info(extract_folder, launch_path)
@@ -92,7 +90,7 @@ class GoodBarber(BaseModule):
 
 
 def main():
-    f = "./test_case/GoodBarber/mivoice.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径, //出错在解压缩失败//
+    f = "./test_case/GoodBarber/mivoice.apk"   
     goodbarber = GoodBarber(f, "android")
     if goodbarber.doSigCheck():
         logging.info("GoodBarber signature Match")

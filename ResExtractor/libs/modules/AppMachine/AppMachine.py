@@ -315,7 +315,7 @@ class AppMachine(BaseModule):
 
 
 def main():
-    f = "./test_case/AppMachine/des.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径
+    f = "./test_case/AppMachine/des.apk"    #
     appcan = AppMachine(f, "android")
     if appcan.doSigCheck():
         logging.info("AppCan signature Match")

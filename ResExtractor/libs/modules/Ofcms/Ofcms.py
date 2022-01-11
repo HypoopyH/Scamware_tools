@@ -23,7 +23,6 @@ log = logging.getLogger(__name__)
 
 '''
 Framework info:  https://www.ofcms.com/
-在线打包系统
 '''
 
 

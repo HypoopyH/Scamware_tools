@@ -38,8 +38,7 @@ class YunDaBao(BaseModule):
         if self.host_os == "android":
             return self._find_main_activity("com.wta.NewCloudApp.activity.ZitianNewsActivity")
         elif self.host_os == "ios":
-            # 需要对ios应用的特征进行判断
-            return self._find_bundle_identifier("com.zitian")  # 云打包的ios应用，Bundle Identifier以"com.zitian"开头
+            return self._find_bundle_identifier("com.zitian")  
         return False
 
     def doExtract(self, working_folder):

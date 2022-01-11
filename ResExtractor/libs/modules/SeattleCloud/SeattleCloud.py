@@ -45,7 +45,6 @@ class SeattleCloud(BaseModule):
         z.extractall(tmp_folder)
         z.close()
 
-        #一般情况下，app.xml文件都是存在的，还未遇到不存在的情况，为了预防这种情况。如果不存在app.xml，则将assets目录下后缀为html\js\css的文件输出
         if os.path.exists(os.path.join(tmp_folder, "assets/Main/app.xml")):
             t = ET.ElementTree(file=os.path.join(tmp_folder, "assets/Main/app.xml"))
             for elem in t.iter(tag='xml'):
@@ -93,7 +92,7 @@ class SeattleCloud(BaseModule):
 
 
 def main():
-    f = "./test_case/SeattleCloud/saving-your-relationship_5.0.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径, //出错在解压缩失败//
+    f = "./test_case/SeattleCloud/saving-your-relationship_5.0.apk"    
     seattlecloud = SeattleCloud(f, "android")
     if seattlecloud.doSigCheck():
         logging.info("GoodBarber signature Match")

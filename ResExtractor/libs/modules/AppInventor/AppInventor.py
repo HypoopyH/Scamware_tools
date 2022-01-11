@@ -22,14 +22,13 @@ logging.basicConfig(stream=sys.stdout, format="%(levelname)s: %(message)s", leve
 log = logging.getLogger(__name__)
 
 
-# 在主Activity的smali文件中做扫描，获取起始页地址，因为所有创建的组件都在主Activity中
-# 起始页地址分别可能以http://,https://和file:///android_asset开始
+
 def extract_startpage(mainactivityfile):
     launch_path = []
     fp = open(mainactivityfile)
     data = fp.read()
     m = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',
-                   data)  # 'https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+'该正则表达式不适用shoutem.py，因为它对于https://***/***，只能提取出https://***
+                   data)  #
     if m:
         for tmp in m:
             if tmp not in launch_path:
@@ -100,9 +99,9 @@ class AppInventor(BaseModule):
                         continue
                     launch_path = extract_startpage(os.path.join(dirpath, fs))
 
-            # elif dirpath.find(package.replace(".", "/")) != -1: ## 注: MainActivity不一定是包名package作为开头
+            # elif dirpath.find(package.replace(".", "/")) != -1: 
             #     for fs in ifilenames:
-            #         if fs.split(".")[0] != mainactivity[1:]:  # 必须是文件名相同，不可以用包含这种关系来判断
+            #         if fs.split(".")[0] != mainactivity[1:]:  
             #             continue
             #         launch_path = extract_startpage(os.path.join(dirpath, fs))
 
@@ -113,7 +112,7 @@ class AppInventor(BaseModule):
 
 
 def main():
-    f = "./test_case/AppInventor/test.apk"  # 后续会将当前脚本路径与之相拼接，得到最终detect_file路径
+    f = "./test_case/AppInventor/test.apk"  
     appinventor = AppInventor(f, "android")
     if appinventor.doSigCheck():
         logging.info("App Inventor signature Match")

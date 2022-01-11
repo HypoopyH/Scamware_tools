@@ -23,8 +23,7 @@ log = logging.getLogger(__name__)
 
 def check_domain(ip):
     """
-    检查输入的域名格式
-    http://wuyu.fxtmets3.cc/wap/main.html改为wuyu.fxtmets3.cc
+    http://wuyu.fxtmets3.cc/wap/main.html to wuyu.fxtmets3.cc
     """
     if ('http' in ip):
         try:
@@ -121,7 +120,6 @@ def WebMonitor(url, storage_path, appname="foo"):
         with open(record_json, 'w+') as f:
             json.dump(init_data, f)
 
-    # 网页存活检测
     record_json = os.path.join(pwd, "record.json")
     with open(record_json, 'r') as f:
         data = json.load(f)
@@ -134,8 +132,6 @@ def WebMonitor(url, storage_path, appname="foo"):
         print("------{} is already closed".format(url))
         return False
     else:
-        # 发现网页仍然存活
-        # 但并未拉下资源时
         if data["State"] == "unknown":
             if h.scarpy_web(md5(url.encode('utf-8')).hexdigest(), os.path.join(storage_path, appname)):
                 data["State"] = "alive"
@@ -148,11 +144,8 @@ def WebMonitor(url, storage_path, appname="foo"):
                     json.dump(data, f)
                 print("------{} download done".format(url))
         else:
-            # 发现网页仍然存活
-            # 已经拉取过以前的资源了
             change_flag = False
             data["Alive_days"] += 1
-            # 先判断有没有变化js
             with open(os.path.join(pwd, "js.txt")) as f:
                 oldjs = f.read().splitlines()
             newjs = h.js_list
@@ -194,9 +187,7 @@ def WebMonitor(url, storage_path, appname="foo"):
                     for line in addimg:
                         f.write(line + '\n')
                 data["Img_change_date"].append(time.asctime())
-            # 若是html结构变化巨大，记录
             if change_flag:
-            # if True:
                 for file in os.listdir(pwd):
                     if file.endswith('.html'):
                         content = open(os.path.join(pwd, file), 'r', encoding='utf-8').read()

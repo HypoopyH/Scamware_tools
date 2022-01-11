@@ -30,7 +30,6 @@ class NativeScript_ios(BaseModule):
         if self.host_os == "android":
             return self._find_main_activity("com.tns.NativeScriptActivity")
         elif self.host_os == "ios":
-            # 需要对ios应用的特征进行判断
             return True
             # log.error("not support yet.")
             # return False
@@ -62,8 +61,6 @@ class NativeScript_ios(BaseModule):
 
 
 def main():
-    # 通过NativeScript本地编译出的ios应用，只找到以.app结尾的文件夹，由于实际场景中的ios应用为.ipa结尾的文件，
-    # 因为.ipa文件可看作是一个压缩包，故将.app文件夹打包压缩成.zip进行处理。
     f = "./test_case/NativeScript/test.zip"
     ns_ios = NativeScript_ios(f, "ios")
     if ns_ios.doSigCheck():

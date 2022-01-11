@@ -51,12 +51,10 @@ class Biznessapps(BaseModule):
                 txt = elem.text
         if txt != "":
             url = "https://www.cdnstabletransit.com/iphone/1.1.1/init.php?app_code="+txt+"&ba_version=50&firstRun=0&notFirstLaunch=1&device_user_id=eaae73dd691273c3&device=iphone5"
-            # 2. 发送请求，获取响应
             print(url)
-            res = requests.get(url=url) #res即返回的响应对象
-            # 3. 解析响应
+            res = requests.get(url=url) 
             result=res.text
-            setting = json.loads(result[1:len(result)-1])  # 去掉首尾中括号
+            setting = json.loads(result[1:len(result)-1]) 
             for item in (setting['tabs']):
                 #print(item)
                 if 'URL' in item:
@@ -73,7 +71,7 @@ class Biznessapps(BaseModule):
 
 
 def main():
-    f = "./test_case/Biznessapps/com.app_svrta.layout_4104_apps.evozi.com.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径, //出错在解压缩失败//
+    f = "./test_case/Biznessapps/com.app_svrta.layout_4104_apps.evozi.com.apk"    
     biznessapps = Biznessapps(f, "android")
     if biznessapps.doSigCheck():
         logging.info("Biznessapps signature Match")

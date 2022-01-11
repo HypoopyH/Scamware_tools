@@ -43,12 +43,12 @@ class AppsGeyser(BaseModule):
 
         launch_path = ""
         for dirpath, dirnames, ifilenames in os.walk(tmp_folder):
-            #audience_network.dex文件是框架自带的，经过apktool反编译之后在assets下会有一个文件夹，这部分信息没有必要提取
+            
             if dirpath.find("audience_network") != -1:
                 continue
             if dirpath.find("assets") != -1:   # store web resource
                 for fs in ifilenames:
-                    #这三个文件是框架自带的，没有必要提取
+                
                     if fs == "audience_network.dex" or fs == "splash_screen.png" or fs == "user_custom_script.js":
                         continue
                     f = os.path.join(dirpath, fs)
@@ -67,7 +67,7 @@ class AppsGeyser(BaseModule):
                     fwh.close()
             elif dirpath.endswith("res/raw") != -1:
                 for fs in ifilenames:
-                    if fs != "configuration.xml":  #在configuration.xml里配置了起始页链接
+                    if fs != "configuration.xml":  
                         continue
                     t = ET.ElementTree(file=os.path.join(dirpath, fs))
                     for elem in t.iter(tag='fullScreenMode'):
@@ -82,7 +82,7 @@ class AppsGeyser(BaseModule):
 
 
 def main():
-    f = "./test_case/AppsGeyser/examplehtmlzip.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径
+    f = "./test_case/AppsGeyser/examplehtmlzip.apk"    
     appsgeyser = AppsGeyser(f, "android")
     if appsgeyser.doSigCheck():
         logging.info("Andromo signature Match")

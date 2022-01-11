@@ -38,9 +38,8 @@ class appery_ios(BaseModule):
         if self.host_os == "android":
             return self._find_main_activity("io.appery")
         elif self.host_os == "ios":
-            # 需要对ios应用的特征进行判断
+            
             '''
-            根据cordova打包出来的文件特征进行匹配
             
             ipa_file = zipfile.ZipFile(self.detect_file)
             app_dir = ""
@@ -53,8 +52,6 @@ class appery_ios(BaseModule):
             match_dic = "www/cordova-js-src"
             return set(match_file) < set(ipa_file.namelist())
             '''
-            # appery打包的ios应用，Bundle Identifier的默认值以"io.appery.app"开头
-            # 当前匹配规则以默认值为准
             return self._find_bundle_identifier("io.appery.app")
         return False
 

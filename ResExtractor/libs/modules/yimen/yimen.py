@@ -52,11 +52,6 @@ class yimen(BaseModule):
         pkgName = root.get("package")
 
         launch_path = "default: assets/www/index.html"  # default local url
-        # 通过请求可以获得对应包名的配置信息，再进行解密，获得加载的url
-        # __v : 含义未知，编辑在代码中，不影响结果
-        # __k : PackageName，应用包名
-        #   v : versionCode，不影响结果
-        # key : 解密密钥。从代码中提取，当前固定值为"VHf9krzin6mfknctnhJ3zQ``"
         __v = 44
         __k = pkgName
         v = 100
@@ -103,7 +98,6 @@ class yimenDecode:
         self.android_id = "1e085ba17f5d55ee60437a390f523376"
 
     def get_q(self, str1):
-        # 传入的参数需要从代码中读取各个值
         bytes1 = bytes(str1, encoding="utf-8")
         v0 = ""
         for bb in bytes1:
@@ -112,8 +106,6 @@ class yimenDecode:
         return str(v0)
 
     def get_d(self):
-        # get android_id
-        # 当前返回测试机的android_id,应该是可随意更换
         return self.android_id
 
     def bytes_digest(self, str_in):
@@ -128,10 +120,9 @@ class yimenDecode:
 
 
 def main():
-    f = "./test_case/yimen/x249050-adr-v100-wv0.apk"  # 未更新应用。服务器端更新了url，更新url为本地url
-    # f = "./test_case/yimen/localsrc_x249050-adr-v103-vi2.apk" # 更新后的应用。服务器端更新了url，更新url为本地url
+    f = "./test_case/yimen/x249050-adr-v100-wv0.apk"  
     f = "./test_case/yimen/ceec9d08e7593a8b7050a2c7958528f6e4bfa52e769cd432bfdc03c893f39269.apk"
-    f = "./test_case/yimen/壳8fdbd4d7c81ec098e8729cea5853185436bdad009c750b7d3f5240bba7880d87.apk"  # 带壳应用
+    f = "./test_case/yimen/壳8fdbd4d7c81ec098e8729cea5853185436bdad009c750b7d3f5240bba7880d87.apk"  
     ym = yimen(f, "android")
     if ym.doSigCheck():
         logging.info("yimen signature Match")

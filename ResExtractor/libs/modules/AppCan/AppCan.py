@@ -33,14 +33,14 @@ def isEncrypted(enfile):
     with open(enfile, "rb") as f:
         read_data = f.read()
         length = len(read_data)
-        a = read_data[(length-17):]   #此时读取的是bytes，要将bytes转换为str，才能进行字符串比较
+        a = read_data[(length-17):]   
         if a == "3G2WIN Safe Guard".encode("UTF-8"):
             flag = True
     f.close()
     return flag
 
 def rc4_init_sbox(key):
-    # s_box = list(range(256))  # 我这里没管秘钥小于256的情况，小于256不断重复填充即可
+    # s_box = list(range(256))  
     s_box = [0xD7,0xDF,0x02,0xD4,0xFE,0x6F,0x53,0x3C,0x25,0x6C,0x99,
                                 0x97,0x06,0x56,0x8F,0xDE,0x40,0x11,0x64,0x07,0x36,0x15,0x70,0xCA,0x18,0x17,0x7D,
                                 0x6A,0xDB,0x13,0x30,0x37,0x29,0x60,0xE1,0x23,0x28,0x8A,0x50,0x8C,0xAC,0x2F,0x88,
@@ -58,17 +58,15 @@ def rc4_init_sbox(key):
                                 0x49,0x1D,0xE6,0x2E,0xE3,0x7E,0xB7,0x3B,0xB3,0xA0,0xB9,0xE5,0x57,0x6E,0xD9,0x08,
                                 0xEB,0xC7,0xED,0x81,0xF1,0xF2,0xBF,0xC0,0xA7,0x4A,0xD6,0x2B,0xB4,0x72,0x9D,0x0E,
                                 0x6D,0xEC,0x48,0xE2,0x33]
-    # print("原来的 s 盒：%s" % s_box)
     j = 0
     for i in range(256):
         j = (j + s_box[i] + ord(key[i % len(key)])) % 256
         #j = (j + s_box[i] + ord(key[i])) % 256
         s_box[i], s_box[j] = s_box[j], s_box[i]
-    # print("混乱后的 s 盒：%s"% s_box)
     return s_box
 
 def rc4_excrypt(plain, box):
-    #print("调用解密程序成功。")
+
     #plain = base64.b64decode(plain.encode('utf-8'))
     #plain = bytes.decode(plain)
     res = []
@@ -80,10 +78,8 @@ def rc4_excrypt(plain, box):
         t = (box[i] + box[j]) % 256
         k = box[t]
         res.append(chr(s ^ k))
-    # print("res用于解密字符串，解密后是：%res" %res)
+
     cipher = "".join(res)
-    # print("解密后的字符串是：%s" %cipher)
-    # print("解密后的输出(没经过任何编码):")
     return cipher
 
 
@@ -92,7 +88,7 @@ class AppCan(BaseModule):
     def transmit(self, value):
         key = value.replace("-", "")
         l = list(key)
-        l.reverse()         #反转字符串，如"abc"变为"cba"
+        l.reverse()         
         result = "".join(l)
         #print(result)
 
@@ -127,7 +123,7 @@ class AppCan(BaseModule):
             if appid == "appkey" :
                 value = elem.text
         #print(value)
-        key = self.transmit(value)   #读取appkey之后将其进行转换
+        key = self.transmit(value)   
         return key
 
 
@@ -138,13 +134,13 @@ class AppCan(BaseModule):
             data = f.read()
         cipherlen = len(data)-0x111
         #print(str(cipherlen))
-        input1 = hashlib.md5()  #要加密的字符串
+        input1 = hashlib.md5()  
         input1.update(str(cipherlen).encode("utf-8"))
         input1.update(filename.encode("utf-8"))
-        dest1 = input1.digest()  #形如b'\xf5\xb3\xb9\xb3\x03\xf5\xa0YBr\xf9\x9d\x19\x1b\xbfE', hexdigest的结果f5b3b9b303f5a0594272f99d191bbf45, 0x45=69=E
+        dest1 = input1.digest()  
         start = dest1[1]
         #print(start)
-        cipher = data[start:start+cipherlen]  #这才是真正的密文段
+        cipher = data[start:start+cipherlen]  
 
         input2 = hashlib.md5()
         input2.update(dest1)
@@ -152,8 +148,6 @@ class AppCan(BaseModule):
         input2.update(key.encode("utf-8"))
         input2.update(filename.encode("utf-8"))
         dest2 = input2.hexdigest()  #generate 32 md5 sig successfully
-        #print(dest2)
-        #hexdigest的十六进制结果是32位，其中可能包含有0x0d，转换之后其去掉0，为0xd
         i = 0
         dest3 = []
         for c in dest2:
@@ -163,17 +157,7 @@ class AppCan(BaseModule):
             else:
                 dest3.append(c)
             i = i + 1
-        #print("".join(dest3))
-        #将处理过的签名值重复多次，直至满足256位,构建256位初始密钥
-        #i = 0
-        #dest4 = []
-        #length = len(dest3)
-        #for i in range(256):
-        #    dest4.append(dest3[i%length])
-        #key = "".join(dest4)    #len(key) = 256
-        #print(key)
-        #RC4解密
-        s_box = rc4_init_sbox(dest3)   #构建256位初始密钥是为了后续处理初始状态向量值S
+        s_box = rc4_init_sbox(dest3)   
         crypt = rc4_excrypt(cipher, s_box)
         return crypt
 
@@ -255,7 +239,7 @@ class AppCan(BaseModule):
 
 
 def main():
-    f = "./test_case/AppCan/apphe.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径
+    f = "./test_case/AppCan/apphe.apk"    
     appcan = AppCan(f, "android")
     if appcan.doSigCheck():
         logging.info("AppCan signature Match")

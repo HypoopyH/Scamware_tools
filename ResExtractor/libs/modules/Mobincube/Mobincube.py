@@ -32,7 +32,6 @@ class Mobincube(BaseModule):
         target =[]
         if urls:
             for url in urls:
-                #第一次正则匹配之后，无法得到纯正的URL链接；通过将\\替换为空格，可以保证第二次政策匹配之后得到纯正的URL链接。即使一开始有多个链接在一起，也可以通过第二次分开
                 url2 = str(url).replace("\\", " ")
                 target2 = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', str(url2))
                 target.append(" ".join(target2))
@@ -46,24 +45,17 @@ class Mobincube(BaseModule):
             idx = len(f)
         return f[:idx]
 
-    #通过java解码并不彻底，只解码了本地资源部分，url链接部分是通过正则匹配实现的，因为如果还是java解码比较复杂，app.dat是通过byte拼接成的文件，格式复杂，也没有统一标准。因此这里有取巧成分，也是考虑到框架改变的情况
     def getresourcefiles(self,tmp_folder):
-        # 获取jvm.dll 的文件路径
         jvmPath = jpype.getDefaultJVMPath()
-
-        # 开启jvm
         if not jpype.isJVMStarted():
             jpype.startJVM(jvmPath, '-ea',
                            '-Djava.class.path={0}'.format(Config.Config["decrypt_jar"]),
                            convertStrings=False)
-        # ②、加载java类（参数是java的长类名）
         javaClass = jpype.JClass("com.ResDecode.Main")()
-
-        # ③、调用java方法，由于我写的是静态方法，直接使用类名就可以调用方法
         resourcefiles = javaClass.DeMobincube(os.path.join(tmp_folder, "assets/app.dat"))
         fnlist=[]
         #print(str(resourcefiles).split(","))
-        for f in (str(resourcefiles).split(",")):         #记录了app.dat中资源文件名字列表,去除文件后缀
+        for f in (str(resourcefiles).split(",")):         
             fnlist.append(self.deletesuffix(f, "."))
         #print(fnlist)
         return fnlist
@@ -95,7 +87,7 @@ class Mobincube(BaseModule):
                     newRP = matchObj.group(2)
 
                     newRP1 = self.deletesuffix(newRP, ".")
-                    if newRP1 not in fnlist and dirpath.endswith("assets") : #如果assets目录下文件不在资源文件名字列表中，则不需要输出
+                    if newRP1 not in fnlist and dirpath.endswith("assets") : 
                         continue
 
                     tf = os.path.join(extract_folder, newRP)

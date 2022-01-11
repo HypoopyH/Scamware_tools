@@ -70,7 +70,7 @@ class AppPark(BaseModule):
 
 
 def main():
-    f = "./test_case/AppPark/app_rider_1.0.apk"    #后续会将当前脚本路径与之相拼接，得到最终detect_file路径, //出错在解压缩失败//
+    f = "./test_case/AppPark/app_rider_1.0.apk"    
     apppark = AppPark(f, "android")
     if apppark.doSigCheck():
         logging.info("AppPark signature Match")
