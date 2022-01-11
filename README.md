@@ -26,11 +26,12 @@ Based upon these insights, we deliberately designed a series of analysis functio
 
 ## Requirements
 
-See in each directory.
+See in `ScamwareAnalyzer/ResExtractor/`  directory.
 
 ## Repository Contents
 
-1. The basic information checker is in `ScamwareAnalyzer/ResChecker/` directory. It contains mainfest, native-h5, permission analysis.
-2. The expand web app ResExtractor is in `ScamwareAnalyzer/ResExtractor/` directory. It contains App Generator recognition, decryption and analysis capabilitiesIcon. In addition, it provides analysis capabilities such as monitoring remote servers, analyzing remote resources, comparing webpage similarity, and automating screenshots.
-3. The Scamware dataset is in `ScamwareAnalyzer/dataset/` directory. It contains 1, 119 real-world scam apps collected from December 1, 2020 to January 1, 2022. 
+- The expand web app ResExtractor is in `ScamwareAnalyzer/ResExtractor/` directory. 
+- It contains App Generator recognition, decryption and analysis capabilitiesIcon.
+- In addition, it provides analysis capabilities such as monitoring remote servers, analyzing remote resources, comparing webpage similarity, and automating screenshots.
+- All details is located in `ScamwareAnalyzer/ResExtractor/README.md`
 
