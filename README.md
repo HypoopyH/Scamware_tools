@@ -7,8 +7,8 @@ Feature：
 3. Separate the low-code from boilerplate code of web apps.
 4. Retrieve remote resource of web apps.
 
-Check the supported module list [here](https://github.com/WebAppSecProj/ResExtractor/tree/master/libs/modules). 
-And technique report [here](https://webappsecproj.github.io/ResExtractor/).
+Check the supported module list [here](https://anonymous.4open.science/r/Scamware_tools-B576/ResExtractor/tree/master/libs/modules). 
+And technique report [here](https://anonymous.4open.science/r/Scamware_tools-B576/ResExtractor/).
 
 ## Introduction
 
