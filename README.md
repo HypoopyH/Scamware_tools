@@ -25,7 +25,7 @@ Based upon these insights, we deliberately designed a series of analysis for hyb
 
 ## Requirements
 
-See in `ScamwareAnalyzer/ResExtractor/`  directory.
+See in `ScamwareAnalyzer/ResExtractor/requirements.txt` .
 
 ## Repository Contents
 
